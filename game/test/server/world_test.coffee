@@ -2,7 +2,7 @@ vows = require 'vows'
 assert = require 'assert'
 World = require '../../server/world'
 WorldObject = require '../../server/world_object'
-specs = vows.describe 'World'
+specs = vows.describe 'World tests'
 
 specs.addBatch
   
