@@ -8,12 +8,11 @@ specs.addBatch
 
   'starting a loop': 
     topic: ->
-      handler = {}
-      handler.tick = => @callback()
-      l = new Loop handler
+      l = new Loop
+      l.on 'tick', @callback
       l.start()
       undefined
      
-    'should call tick for handler': ->
+    'should call tick event callback': ->
     
 .export module

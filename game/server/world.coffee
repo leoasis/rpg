@@ -2,12 +2,12 @@ class World
   constructor: ->
     @objects = []
     
-  tick: ->
+  spin: ->
     for object in @objects
       object.update()
     
-  spawn: (type) ->
-    object = new type
+  spawn: (type, args...) ->
+    object = new type(args)
     @objects.push object
     object
 

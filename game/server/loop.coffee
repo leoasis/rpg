@@ -1,6 +1,6 @@
-class Loop
-  constructor: (handler) ->
-    @handler = handler
+events = require 'events'
+
+class Loop extends events.EventEmitter
   
   interval: 50
     
@@ -10,7 +10,7 @@ class Loop
     
   _tick: ->
     return if @stopped
-    @handler.tick()
+    @emit 'tick'
     @_nextTick()
   
   _nextTick: ->

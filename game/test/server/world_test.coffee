@@ -10,15 +10,13 @@ specs.addBatch
     topic: ->
       new World
       
-    'when we span an object and call tick':
+    'when we span an object and spin the world':
       topic: (world) ->        
         object = world.spawn WorldObject        
-        object.update = -> 
-          object.updated = true
-        world.tick()
-        object
+        object.on 'updated', @callback
+        world.spin()
+        undefined
         
       'it should call update on object': (object) ->
-        assert.isTrue object.updated
       
-.export module
+.export module, error: false
