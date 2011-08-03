@@ -1,13 +1,28 @@
-express = require 'express'
+fs = require 'fs'
+express = require('express')
 
-module.exports.start = ->
-  app = express.createServer()
+module.exports.start = (app) ->
 
   app.configure ->
-    app.set 'view options', { layout: false }
+    app.set 'views', __dirname + '/views'
+    app.set 'view engine', 'jade'
+    app.use express.bodyParser()
+    app.use express.methodOverride()
+    app.use app.router
+    app.use express.static __dirname + '/site/public'
+    app.use require('browserify')(
+      require: __dirname + '/../game/client/game.coffee'
+    )
 
-  app.get '/', (req, res) ->
-    res.render 'index.ejs'
+  app.configure 'development', ->
+    app.use express.errorHandler dumpExceptions: true, showStack: true
 
-  app.listen 3000
+  app.configure 'production', ->
+    app.use express.errorHandler()
+
+  # Routes
+  fs.readdir __dirname + '/routes', (err, list) ->
+    return if (err or !list)    
+    list.forEach (f) ->
+      require('./routes/' + f) app
 

@@ -1,9 +1,13 @@
 {
-  "name":         "poc",
+  "name":         "rpg",
   "version":      "0.0.1",
   "dependencies": {
                     "coffee-script": ">=1.1.1",
-                    "vows": ">=0.5.8"
+                    "vows": ">=0.5.9",
+                    "jade": ">=0.13.0",
+                    "express": ">=2.4.2",
+                    "socket.io": ">=0.7.6",
+                    "browserify": ">=1.4.0"
                   },
   "private":      "true"
 }

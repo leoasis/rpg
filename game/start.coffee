@@ -1,9 +1,5 @@
-socket_io  = require 'socket.io'
-
-module.exports.start = (app) ->
-  socket = socket_io.listen app
-  socket.on 'connection', (client) ->
-    client.on 'message', (message) ->
-      client.send message
-    client.on 'disconnect', ->
-      client.broadcast JSON.stringify([['disconnect', client.sessionId]])
+module.exports.start = (io) ->
+  io.sockets.on 'connection', (socket) ->
+    socket.emit 'news', hello: 'world'
+    socket.on 'my other event', (data) ->
+      console.log data
