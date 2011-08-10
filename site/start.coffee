@@ -13,7 +13,10 @@ module.exports.start = (app) ->
     app.use require('browserify')(
       require: __dirname + '/../game/client/game.coffee'
     )
-
+     
+  app.dynamicHelpers
+    scripts: -> []
+          
   app.configure 'development', ->
     app.use express.errorHandler dumpExceptions: true, showStack: true
 
