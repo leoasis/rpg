@@ -10,7 +10,7 @@ class World
       object.update()
     
   spawn: (type, args...) ->
-    object = new type(map, args...)
+    object = new type(@map, args...)
     @objects.push object
     object
 

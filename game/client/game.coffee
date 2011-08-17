@@ -9,7 +9,7 @@ module.exports.begin = (canvas) ->
 
   world = new World
   
-  player = world.spawn Player, map
+  player = world.spawn Player
   player_view = new PlayerView context, player
     
   l = new Loop

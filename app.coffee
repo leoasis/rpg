@@ -7,4 +7,4 @@ io = require('socket.io').listen app
 site.start app
 game.start io
 
-app.listen 3000
+app.listen process.env.PORT || 3000;
