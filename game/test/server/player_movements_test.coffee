@@ -1,6 +1,6 @@
 vows = require 'vows'
 assert = require 'assert'
-Loop = require '../../server/loop'
+Loop = require '../../common/loop'
 World = require '../../server/world'
 Player = require '../../server/player'
 
@@ -18,7 +18,7 @@ specs.addBatch
      
     'and a new player in the world':
       topic: (world) ->
-        world.spawn Player, { map: 1, x: 1, y: 1 }
+        world.spawn Player, map: 1, x: 1, y: 1
         
       'when moving right':
         topic: (player) ->

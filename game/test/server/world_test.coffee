@@ -7,8 +7,7 @@ specs = vows.describe 'World tests'
 specs.addBatch
   
   'with a new world':
-    topic: ->
-      new World
+    topic: -> new World
       
     'when we span an object and spin the world':
       topic: (world) ->        

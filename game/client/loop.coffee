@@ -6,15 +6,12 @@ class Loop extends events.EventEmitter
     
   start: ->
     @stopped = false
-    @_nextTick()
+    @_tick()
     
   _tick: ->
     return if @stopped
     @emit 'tick'
-    @_nextTick()
-  
-  _nextTick: ->
-    setTimeout (=> @_tick()), @interval    
+    setTimeout (=> @_tick()), @interval
     
   stop: ->    
     @stopped = true

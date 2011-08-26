@@ -1,6 +1,6 @@
 vows = require 'vows'
 assert = require 'assert'
-Loop = require '../../server/loop'
+Loop = require '../../common/loop'
 
 specs = vows.describe 'Loop tests'
 

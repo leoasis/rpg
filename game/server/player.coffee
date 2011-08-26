@@ -1,18 +1,18 @@
 WorldObject = require './world_object'
 
-class Player extends WorldObject
-  constructor: (position) ->
-    @position = position
+class Player extends WorldObject  
+  constructor: ->
+    super
+    @interval 'move', 10
+
+  moving: ->
+    @moveInterval.inProgress()
     
-  _update: ->
-    switch @curr_action
-      when 'right' then @position.x += 1
-      when 'left'  then @position.x -= 1
-      when 'up'    then @position.y += 1
-      when 'down'  then @position.y -= 1
-  
   move: (direction) ->
-    @curr_action = direction
+    return if @moving()
+    @map.move this, direction
+    @moveInterval.start()
+    console.log "I'm player #{@id} and I moved #{direction} to x:#{@position.x} y:#{@position.y}"
     this
     
 module.exports = Player
