@@ -1,29 +1,25 @@
-class Component
-  constructor: (owner, name) ->
-    @owner = owner
-    @name = name
-    @owner[name] = this
+components = []
 
-class PositionComponent extends Component
-  constructor: (owner) ->
-    super owner, 'position'    
-    @x = 0
-    @y = 0
+exports.oneOf: (name, entity, properties) ->
+  component = new components[name]
+  component.owner = entity
+  component.name = name
+  for propName, value in properties
+    component[propName] = value
 
-class MapComponent extends Component
-  constructor: (owner) ->
-    super owner, 'map'
-    @no = 1
-    
-class OrientationComponent extends Component
-  constructor: (owner) ->
-    super owner, 'orientation'
-    @direction = 'down'
-    
-class PhysicsComponent extends Component
-  constructor: (owner) ->
-    super owner, 'physics'
-    @speed = 0
-    @width = x: 1, y: 1
-    @requires 'orientation', 'position'
+class Component  
+
+components.position =
+  class PositionComponent extends Component    
+
+components.map = 
+  class MapComponent extends Component    
+
+components.orientation =
+  class OrientationComponent extends Component    
+
+components.physics =
+  class PhysicsComponent extends Component
+    constructor: ->      
+      @requires 'orientation', 'position'
     

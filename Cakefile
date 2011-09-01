@@ -9,7 +9,16 @@ run = (command) ->
 
 task 'test:game.server', 'Runs game server tests', ->
   testsPath = 'game/test/server'
-  run "#{vowsPath} #{testsPath}/*.coffee"
-    
-task 'test', 'Runs all tests', ->
-  invoke 'test:game.server'
+  run "#{vowsPath} #{testsPath}/*.coffee --spec"
+
+
+task 'run:test', 'Runs all tests', (options) ->
+  console.log "#{vowsPath} #{options.arguments[1]} --spec"
+
+option '-f', '--file [PATH]', 'File path'
+
+task 'test', 'Runs all tests', (options) ->  
+  if (options.file)
+    run "#{vowsPath} #{options.file} --spec"
+  else
+    invoke 'test:game.server'
