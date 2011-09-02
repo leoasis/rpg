@@ -1,6 +1,6 @@
 vows = require 'vows'
 assert = require 'assert'
-Loop = require '../../common/loop'
+Loop = require '../loop'
 World = require '../../server/world'
 Player = require '../../server/player'
 

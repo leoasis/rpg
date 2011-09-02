@@ -1,8 +1,8 @@
 vows = require 'vows'
 assert = require 'assert'
-Entity = require '../../server/entity'
+Entity = require '../entity'
 
-vows.describe('Creating an entity').addBatch
+exports.suite = vows.describe('Creating an entity').addBatch
 
   'with the entity types definition loaded':
     topic: ->
@@ -15,6 +15,7 @@ vows.describe('Creating an entity').addBatch
             width:
               x: 1
               y: 1
+      null
     
     'with a description of the entity having a component':
       topic: ->
@@ -37,5 +38,3 @@ vows.describe('Creating an entity').addBatch
           assert.isObject entity.position
           assert.isObject entity.map
           assert.isObject entity.physics
-
-.export module
