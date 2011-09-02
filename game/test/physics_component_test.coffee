@@ -1,15 +1,12 @@
 vows = require 'vows'
 assert = require 'assert'
 Loop = require '../loop'
-World = require '../../server/world'
-Player = require '../../server/player'
-
-specs = vows.describe 'Player movement behavior'
 
 world = new World
 
-specs.addBatch
-  'with a world spinning':
+exports.specs = vows.describe('Player movement behavior').addBatch
+
+  "with an entity with position and physics components created":
     topic: ->
       l = new Loop
       l.on 'tick', -> world.spin()

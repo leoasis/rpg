@@ -1,3 +1,5 @@
+extend = require './extend'
+
 class Component  
   constructor: ->
     
@@ -14,13 +16,10 @@ class PhysicsComponent extends Component
   constructor: ->
 
 
-exports.oneOf = (name, entity, properties) ->
-  console.log name
-  console.log properties
+exports.oneOf = (name, entity, properties) ->  
   componentClassName = "#{name[0].toUpperCase() + name.slice(1)}Component"
   componentClass = eval componentClassName
   component = new componentClass
   component.owner = entity
   component.name = name
-  for propName, value in properties
-    component[propName] = value
+  extend component, properties  
