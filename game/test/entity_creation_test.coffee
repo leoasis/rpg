@@ -14,8 +14,7 @@ exports.specs = vows.describe('Creating an entity').addBatch
             speed: 20
             width:
               x: 1
-              y: 1
-      null
+              y: 1      
     
     "with a description of the entity having a component":
       topic: ->

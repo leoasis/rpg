@@ -1,31 +1,63 @@
 vows = require 'vows'
 assert = require 'assert'
 Loop = require '../loop'
+Entity = require '../entity'
 
-world = new World
+l = new Loop
+l.start()
 
-exports.specs = vows.describe('Player movement behavior').addBatch
+exports.specs = vows.describe('Physics component behavior').addBatch
 
-  "with an entity with position and physics components created":
+  "with an entity with a physics component":
     topic: ->
-      l = new Loop
-      l.on 'tick', -> world.spin()
-      l.start()
-      world
-     
-    'and a new player in the world':
-      topic: (world) ->
-        world.spawn Player, map: 1, x: 1, y: 1
+      Entity.loadTypes
+        "Entity 1":
+          position: {}
+          map: {}
+          physics:
+            speed: 20
+            width:
+              x: 1
+              y: 1
+              
+      entity = Entity.createFrom
+        type:
+          "Entity 1"
+        position:
+          x: 1
+          y: 1
+        map:
+          no: 1
+          
+      l.on 'tick', -> entity.update()
+      entity      
+      
+    "when moving right":
+      topic: (entity) ->
+        entity.physics.move 'right'
+        entity
         
-      'when moving right':
-        topic: (player) ->
-          player.move 'right'
-      
-        'after moving completed':
-          topic: (player) ->
-            player.on 'updated', @callback
-            undefined
-      
-          'should cause the player to move one tile right': (player) ->
-      
-.export module, error: false
+      "it should move 1 tile right": (entity) ->
+        assert.equal 2, entity.position.x
+        
+      "and during <speed> cycles":
+        topic: (entity) ->
+          ticks = 0
+          l.on 'tick', => 
+            ticks++
+            @callback null, entity if ticks == 5
+          undefined
+          
+        "it should ignore move commands": (err, entity) ->
+          assert.isTrue entity.physics.moving
+        
+      "and after <speed> cycles":
+        topic: (entity) ->
+          ticks = 0
+          l.on 'tick', => 
+            ticks++
+            @callback null, entity if ticks == 20
+          undefined
+          
+        "it should be ready to move again": (err, entity) ->
+          assert.isFalse entity.physics.moving

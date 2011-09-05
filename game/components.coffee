@@ -15,6 +15,8 @@ class OrientationComponent extends Component
 class PhysicsComponent extends Component
   constructor: ->
 
+  move: (direction) ->
+    
 
 exports.oneOf = (name, entity, properties) ->  
   componentClassName = "#{name[0].toUpperCase() + name.slice(1)}Component"
