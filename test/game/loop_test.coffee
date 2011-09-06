@@ -1,6 +1,6 @@
 vows = require 'vows'
 assert = require 'assert'
-Loop = require '../loop'
+Loop = require '../../game/loop'
 
 exports.specs = vows.describe('Loop tests').addBatch
 

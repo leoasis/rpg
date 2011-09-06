@@ -1,7 +1,7 @@
 vows = require 'vows'
 assert = require 'assert'
-Loop = require '../loop'
-Entity = require '../entity'
+Loop = require '../../game/loop'
+Entity = require '../../game/entity'
 
 l = new Loop
 l.start()

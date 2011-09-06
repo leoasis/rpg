@@ -1,6 +1,6 @@
 vows = require 'vows'
 assert = require 'assert'
-Entity = require '../entity'
+Entity = require '../../game/entity'
 
 exports.specs = vows.describe('Creating an entity').addBatch
 

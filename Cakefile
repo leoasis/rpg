@@ -11,7 +11,7 @@ runTests = (testsPath) ->
   run "#{vowsPath} #{testsPath}/*.coffee --spec"
 
 task 'test:game', 'Runs game tests', ->
-  runTests 'game/test'
+  runTests 'test/game'
 
 task 'test', 'Runs all tests', (options) ->
   invoke 'test:game'
