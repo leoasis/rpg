@@ -11,7 +11,7 @@ module.exports.start = (app) ->
     app.use app.router
     app.use express.static __dirname + '/site/public'
     app.use require('browserify')(
-      require: __dirname + '/../game/client/game.coffee'
+      require: __dirname + '/../game/client.coffee'
     )
      
   app.dynamicHelpers

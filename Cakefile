@@ -6,7 +6,6 @@ run = (command) ->
   exec command, (error, stdout, stderr) ->
     console.log "#{stdout}" if stdout.length > 0
     console.log "#{stderr}" if stderr.length > 0
-    console.log "exec error: #{error}" if error?
 
 runTests = (testsPath) ->
   run "#{vowsPath} #{testsPath}/*.coffee --spec"

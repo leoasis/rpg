@@ -1,11 +1,5 @@
 extend = require './extend'
 
-class PositionComponent
-    
-class MapComponent
-    
-class OrientationComponent
-  
 class PhysicsComponent
   directions = 
     up: 
@@ -33,7 +27,10 @@ class PhysicsComponent
     
 exports.oneOf = (name, properties) ->  
   componentClassName = "#{name[0].toUpperCase() + name.slice(1)}Component"
-  componentClass = eval componentClassName
-  component = new componentClass
+  if eval "typeof #{componentClassName} === 'function'"
+    componentClass = eval componentClassName
+    component = new componentClass
+  else
+    component = {}
   component.name = name
   extend component, properties  
