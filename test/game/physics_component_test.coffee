@@ -6,7 +6,7 @@ Entity = require '../../game/entity'
 l = new Loop
 l.start()
 
-exports.specs = vows.describe('Physics component behavior').addBatch
+exports.specs = vows.describe('Basic movement').addBatch
 
   "with an entity with a physics component":
     topic: ->
@@ -38,7 +38,7 @@ exports.specs = vows.describe('Physics component behavior').addBatch
         entity
         
       "it should move 1 tile right": (entity) ->
-        assert.equal 2, entity.position.x
+        assert.equal entity.position.x, 2
         
       "and during <speed> cycles":
         topic: (entity) ->
@@ -60,4 +60,4 @@ exports.specs = vows.describe('Physics component behavior').addBatch
           undefined
           
         "it should be ready to move again": (err, entity) ->
-          assert.isFalse entity.physics.moving
+          assert.isFalse entity.physics.moving 

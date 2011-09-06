@@ -2,21 +2,24 @@ events = require 'events'
 
 class Loop extends events.EventEmitter
   
-  interval: 50
+  ticksPerSecond: 50
     
   start: ->
-    @stopped = false
-    @_nextTick()
-    
-  _tick: ->
-    return if @stopped
-    @emit 'tick'
-    @_nextTick()
-  
-  _nextTick: ->
-    setTimeout (=> @_tick()), @interval    
-    
-  stop: ->    
-    @stopped = true
+    return if @timer
+    last = Date.now()
+    tickRate = 1000 / @ticksPerSecond
+    @timer = setInterval =>
+      now = Date.now()
+      while now - last >= tickRate
+        @emit 'tick'
+        last += tickRate
+      @emit 'idle'
+    , tickRate
+    return
+
+  stop: ->
+    return unless @timer
+    clearInterval @timer
+    @timer = null
   
 module.exports = Loop

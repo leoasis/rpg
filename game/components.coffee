@@ -1,27 +1,39 @@
 extend = require './extend'
 
-class Component  
-  constructor: ->
+class PositionComponent
     
-class PositionComponent extends Component    
-  constructor: ->
+class MapComponent
     
-class MapComponent extends Component    
-  constructor: ->
-    
-class OrientationComponent extends Component    
-  constructor: ->
+class OrientationComponent
   
-class PhysicsComponent extends Component
-  constructor: ->
-
-  move: (direction) ->
+class PhysicsComponent
+  directions = 
+    up: 
+      x: 0, y: 1
+    down: 
+      x: 0, y: -1
+    right: 
+      x: 1, y: 0
+    left: 
+      x: -1, y: 0
     
-
-exports.oneOf = (name, entity, properties) ->  
+  move: (direction) ->
+    return if @moving
+    @moving = yes
+    @progress = 0
+    velocity = directions[direction]
+    @owner.position.x += velocity.x
+    @owner.position.y += velocity.y
+  
+  update: ->
+    @progress++ if @moving
+    if @speed == @progress
+      @moving = no
+      @progress = null
+    
+exports.oneOf = (name, properties) ->  
   componentClassName = "#{name[0].toUpperCase() + name.slice(1)}Component"
   componentClass = eval componentClassName
   component = new componentClass
-  component.owner = entity
   component.name = name
   extend component, properties  
