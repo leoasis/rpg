@@ -1,5 +1,6 @@
 Loop = require '../loop'
 Entity = require '../entity'
+{ClientUpdateSubsystem} = require '../subsystems'
 
 Entity.loadTypes
   "Player":
@@ -10,39 +11,37 @@ Entity.loadTypes
       width:
         x: 1
         y: 1
-    updatesClient: {}
+    clientUpdate: {}
     
 gameLoop = new Loop
 entities = []
 subsystems = []
-
 gameLoop.on 'tick', ->
   entity.update() for entity in entities
   subsystem.update() for subsystem in subsystems
   undefined
 
 exports.start = (io) ->
-  gameLoop.start()
-  subsystem.start() for subsystem in subsystems
+  subsystems.push new ClientUpdateSubsystem(entities)
   
+  gameLoop.start()
+  i = 1
   io.sockets.on 'connection', (socket) ->    
     entity = Entity.createFrom 
       type: "Player"
       position:
         x: 1
-        y: 3
+        y: i++
       map:
         no: 1
-    
-    ###
-    Emitting to socket should be a subsystem, the component referencing this should have the socket
-    associated with the player.
-    This subsystem could run at a certain rate and send updates to the clients.
-    This update should send entity updates from the same map as the client player's.
-    ###
-    entity.updatesClient.socket = socket
+      
+    entity.clientUpdate.socket = socket    
+    subsystem.add entity for subsystem in subsystems
     entities.push entity
+    
+    socket.emit 'created', entity.serialize()
     
     socket.on 'disconnect', ->
       index = entities.indexOf entity
       entities.splice index, 1 if index isnt -1
+      entity.destroy()     

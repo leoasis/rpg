@@ -1,5 +1,14 @@
 extend = require './extend'
 
+class PositionComponent
+  serialize: ->
+    x: @x
+    y: @y
+    
+class MapComponent
+  serialize: ->
+    no: @no
+    
 class PhysicsComponent
   directions = 
     up: 
@@ -24,6 +33,12 @@ class PhysicsComponent
     if @speed == @progress
       @moving = no
       @progress = null
+      
+  serialize: ->
+    speed: @speed
+    width:
+      x: @width.x
+      y: @width.y
     
 exports.oneOf = (name, properties) ->  
   componentClassName = "#{name[0].toUpperCase() + name.slice(1)}Component"
