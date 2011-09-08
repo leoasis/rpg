@@ -8,29 +8,29 @@ exports.loadTypes = (theTypes) ->
   types = theTypes
 
   
-class Entity extends EventEmitter
+class Entity extends EventEmitter  
   constructor: ->
-    @components = []
+    @components = []    
     
   addComponent: (component) ->
     @components.push component
     component.owner = this
     this[component.name] = component
     
-  init: -> @_broadCast 'init'
-  update: -> @_broadCast 'update'
+  init: -> @_callComponents 'init'
+  update: -> @_callComponents 'update'
 
   serialize: ->
-    obj = type: @type
+    obj = type: @type, id: @id
     for component in @components when component.serialize?
       obj[component.name] = component.serialize()      
     obj
     
   destroy: -> 
-    @_broadCast 'destroy'
+    @_callComponents 'destroy'
     @emit 'destroyed', this
     
-  _broadCast: (method) ->
+  _callComponents: (method) ->
     component[method]() for component in @components when component[method]?
   
 exports.createFrom = (description) ->

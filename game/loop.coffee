@@ -1,6 +1,6 @@
-events = require 'events'
+{EventEmitter} = require 'events'
 
-class Loop extends events.EventEmitter
+class Loop extends EventEmitter
   
   ticksPerSecond: 50
     

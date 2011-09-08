@@ -1,30 +1,32 @@
 Loop = require '../loop'
 Entity = require '../entity'
-{ClientUpdateSubsystem} = require '../subsystems'
-
-Entity.loadTypes
-  "Player":
-    position: {}
-    map: {}
-    physics:
-      speed: 20
-      width:
-        x: 1
-        y: 1
-    clientUpdate: {}
-    
-gameLoop = new Loop
-entities = []
-subsystems = []
-gameLoop.on 'tick', ->
-  entity.update() for entity in entities
-  subsystem.update() for subsystem in subsystems
-  undefined
+{ClientUpdateSubsystem} = require './client_update_subsystem'
 
 exports.start = (io) ->
-  subsystems.push new ClientUpdateSubsystem(entities)
+  Entity.loadTypes
+    "Player":
+      position: {}
+      map: {}
+      physics:
+        speed: 20
+        width:
+          x: 1
+          y: 1
+      clientUpdate: {}
+      
+  gameLoop = new Loop
+  entities = []
+  subsystems = []
+  gameLoop.on 'tick', ->
+    entity.update() for entity in entities
+    subsystem.update() for subsystem in subsystems
+    undefined
+  
+  clientUpdate = new ClientUpdateSubsystem entities
+  subsystems.push clientUpdate
   
   gameLoop.start()
+  nextId = 1
   i = 1
   io.sockets.on 'connection', (socket) ->    
     entity = Entity.createFrom 
@@ -34,12 +36,11 @@ exports.start = (io) ->
         y: i++
       map:
         no: 1
-      
-    entity.clientUpdate.socket = socket    
-    subsystem.add entity for subsystem in subsystems
+        
+    entity.id = nextId++
+    entity.clientUpdate.socket = socket
     entities.push entity
-    
-    socket.emit 'created', entity.serialize()
+    clientUpdate.start entity
     
     socket.on 'disconnect', ->
       index = entities.indexOf entity
