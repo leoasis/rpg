@@ -24,8 +24,6 @@ module.exports.start = (app) ->
     app.use express.errorHandler()
 
   # Routes
-  fs.readdir __dirname + '/routes', (err, list) ->
-    return if (err or !list)    
-    list.forEach (f) ->
-      require('./routes/' + f) app
-
+  routeModules = fs.readdirSync __dirname + '/routes'
+  routeModules.forEach (f) ->
+    require('./routes/' + f) app

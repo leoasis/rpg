@@ -3,8 +3,8 @@ class RenderSubsystem
     @entities = entities
     @ticks = 0
     @canvas = canvas
-    @context = canvas.getContext '2d'
-  
+    @context = canvas.getContext '2d'    
+    
   updateTicksRate: 1
   
   update: ->

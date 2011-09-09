@@ -1,7 +1,8 @@
 vows = require 'vows'
 assert = require 'assert'
 Loop = require '../../game/loop'
-Entity = require '../../game/entity'
+{Entity} = require '../../game/entity'
+EntityFactory = require '../../game/entity_factory'
 
 l = new Loop
 l.start()
@@ -10,7 +11,8 @@ exports.specs = vows.describe('Basic movement').addBatch
 
   "with an entity with a physics component":
     topic: ->
-      Entity.loadTypes
+      EntityFactory.for Entity
+      EntityFactory.loadTypes
         "Entity 1":
           position: {}
           map: {}
@@ -20,7 +22,7 @@ exports.specs = vows.describe('Basic movement').addBatch
               x: 1
               y: 1
               
-      entity = Entity.createFrom
+      entity = EntityFactory.create
         type:
           "Entity 1"
         position:

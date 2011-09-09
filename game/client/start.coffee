@@ -1,15 +1,18 @@
 Loop = require '../loop'
-Entity = require '../entity'
+{Entity} = require '../entity'
+EntityFactory = require '../entity_factory'
 {RenderSubsystem} = require './render_subsystem'
 {SynchronizationSubsystem} = require './synchronization_subsystem'
+{PlayerController} = require './player_controller'
 
 exports.begin = (canvas) ->
-  Entity.loadTypes
+  EntityFactory.for Entity
+  EntityFactory.loadTypes
     "Player":
       position: {}
       map: {}
       physics:
-        speed: 20
+        speed: 10
         width:
           x: 1
           y: 1
@@ -25,20 +28,17 @@ exports.begin = (canvas) ->
     undefined
     
   subsystems.push new RenderSubsystem entities, canvas
-  sync = new SynchronizationSubsystem entities
+  sync = new SynchronizationSubsystem entities, EntityFactory
   
   gameLoop.start()
   
-  socket = io.connect 'http://localhost'
+  socket = io.connect()
   socket.on 'start', (data) ->
     playerId = sync.start data
     console.log "I'm player #{playerId}"
+    entities[playerId].controller = new PlayerController $(canvas), socket
     
   socket.on 'update', (data) ->
     sync.update data
   
-  keys = 
-    left: 37
-    up: 38
-    right: 39
-    down: 40
+  

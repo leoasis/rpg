@@ -3,7 +3,7 @@
 - scripts.push("/browserify.js")
 - scripts.push("/socket.io/socket.io.js")
 
-canvas(id="canvas", width=800, height=600, style='border: dotted 1px')
+canvas#canvas(width=800, height=600, style='border: dotted 1px', tabindex=0)
 
 :coffeescript
   game = require './client'

@@ -1,12 +1,14 @@
 vows = require 'vows'
 assert = require 'assert'
-Entity = require '../../game/entity'
+{Entity} = require '../../game/entity'
+EntityFactory = require '../../game/entity_factory'
 
 exports.specs = vows.describe('Creating an entity').addBatch
 
   "with the entity types definition loaded":
     topic: ->
-      Entity.loadTypes
+      EntityFactory.for Entity
+      EntityFactory.loadTypes
         "Entity 1":
           position: {}
           map: {}
@@ -28,7 +30,7 @@ exports.specs = vows.describe('Creating an entity').addBatch
       
       "when I create the entity":
         topic: (description) ->
-          Entity.createFrom description
+          EntityFactory.create description
         
         "it should have a type": (entity) ->
           assert.equal "Entity 1", entity.type

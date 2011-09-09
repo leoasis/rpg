@@ -1,14 +1,16 @@
 Loop = require '../loop'
-Entity = require '../entity'
+{Entity} = require './entity'
+EntityFactory = require '../entity_factory'
 {ClientUpdateSubsystem} = require './client_update_subsystem'
 
 exports.start = (io) ->
-  Entity.loadTypes
+  EntityFactory.for Entity
+  EntityFactory.loadTypes
     "Player":
       position: {}
       map: {}
       physics:
-        speed: 20
+        speed: 10
         width:
           x: 1
           y: 1
@@ -29,7 +31,7 @@ exports.start = (io) ->
   nextId = 1
   i = 1
   io.sockets.on 'connection', (socket) ->    
-    entity = Entity.createFrom 
+    entity = EntityFactory.create 
       type: "Player"
       position:
         x: 1
@@ -42,6 +44,9 @@ exports.start = (io) ->
     entities.push entity
     clientUpdate.start entity
     
+    socket.on 'move', (direction) ->
+      entity.physics.move direction
+      
     socket.on 'disconnect', ->
       index = entities.indexOf entity
       entities.splice index, 1 if index isnt -1
