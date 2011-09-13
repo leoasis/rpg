@@ -4,7 +4,8 @@ class SynchronizationSubsystem
     @factory = factory
     
   start: (data) ->
-    @entities[id] = @factory.create entityData for id, entityData of data
+    for id, entityData of data when typeof entityData is 'object'     
+      @entities[id] = @factory.create entityData    
     data.me
     
   update: (data) ->

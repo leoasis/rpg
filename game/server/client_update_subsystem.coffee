@@ -9,7 +9,7 @@ class ClientUpdateSubsystem
     state = {}
     for entity in @entities
       state[entity.id] = entity.serialize()
-    state.me = entity.id
+    state.me = entity.id    
     entity.clientUpdate.socket.emit 'start', state
   
   update: ->

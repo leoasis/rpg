@@ -3,6 +3,8 @@ assert = require 'assert'
 Loop = require '../../game/loop'
 {Entity} = require '../../game/entity'
 EntityFactory = require '../../game/entity_factory'
+ComponentFactory = require '../../game/component_factory'
+{PhysicsComponent} = require '../../game/physics_component'
 
 l = new Loop
 l.start()
@@ -11,6 +13,9 @@ exports.specs = vows.describe('Basic movement').addBatch
 
   "with an entity with a physics component":
     topic: ->
+      ComponentFactory.register
+        physics: PhysicsComponent
+        
       EntityFactory.for Entity
       EntityFactory.loadTypes
         "Entity 1":

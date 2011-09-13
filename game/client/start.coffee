@@ -1,11 +1,14 @@
 Loop = require '../loop'
 {Entity} = require '../entity'
 EntityFactory = require '../entity_factory'
+ComponentFactory = require '../component_factory'
+components = require './components'
 {RenderSubsystem} = require './render_subsystem'
 {SynchronizationSubsystem} = require './synchronization_subsystem'
-{PlayerController} = require './player_controller'
 
 exports.begin = (canvas) ->
+  ComponentFactory.register components
+  
   EntityFactory.for Entity
   EntityFactory.loadTypes
     "Player":
@@ -34,9 +37,9 @@ exports.begin = (canvas) ->
   
   socket = io.connect()
   socket.on 'start', (data) ->
+    data[data.me].controller = { socket, canvas: $ canvas }
     playerId = sync.start data
-    console.log "I'm player #{playerId}"
-    entities[playerId].controller = new PlayerController $(canvas), socket
+    console.log "I'm player #{playerId}"   
     
   socket.on 'update', (data) ->
     sync.update data

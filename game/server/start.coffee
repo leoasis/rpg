@@ -1,9 +1,14 @@
 Loop = require '../loop'
 {Entity} = require './entity'
 EntityFactory = require '../entity_factory'
+ComponentFactory = require '../component_factory'
+components = require './components'
 {ClientUpdateSubsystem} = require './client_update_subsystem'
 
 exports.start = (io) ->
+  io.set('log level', 1);
+  ComponentFactory.register components
+  
   EntityFactory.for Entity
   EntityFactory.loadTypes
     "Player":
