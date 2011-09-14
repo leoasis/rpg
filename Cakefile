@@ -22,11 +22,8 @@ runTests = (testsPath) ->
   testFiles = ("#{testsPath}/#{file}" for file in fs.readdirSync testsPath)
   run vowsPath, testFiles.concat ["--spec"]
 
-task 'test:game', 'Runs game tests', ->
-  runTests 'test/game'
-
 task 'test', 'Runs all tests', ->
-  invoke 'test:game'
+  run vowsPath, ["--spec"]
 
 task 'run', 'Runs the application', ->
   run coffeePath, ["app.coffee"]
