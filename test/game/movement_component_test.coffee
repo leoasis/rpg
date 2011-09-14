@@ -4,7 +4,7 @@ Loop = require '../../game/loop'
 {Entity} = require '../../game/entity'
 EntityFactory = require '../../game/entity_factory'
 ComponentFactory = require '../../game/component_factory'
-{PhysicsComponent} = require '../../game/physics_component'
+{MovementComponent} = require '../../game/movement_component'
 
 l = new Loop
 l.start()
@@ -14,18 +14,15 @@ exports.specs = vows.describe('Basic movement').addBatch
   "with an entity with a physics component":
     topic: ->
       ComponentFactory.register
-        physics: PhysicsComponent
+        movement: MovementComponent
         
       EntityFactory.for Entity
       EntityFactory.loadTypes
         "Entity 1":
           position: {}
           map: {}
-          physics:
-            speed: 20
-            width:
-              x: 1
-              y: 1
+          movement:
+            speed: 20            
               
       entity = EntityFactory.create
         type:
@@ -36,12 +33,12 @@ exports.specs = vows.describe('Basic movement').addBatch
         map:
           no: 1
           
-      l.on 'tick', -> entity.update()
+      l.on 'tick', -> entity.tick()
       entity      
       
     "when moving right":
       topic: (entity) ->
-        entity.physics.move 'right'
+        entity.movement.move 'right'
         entity
         
       "it should move 1 tile right": (entity) ->
@@ -56,7 +53,7 @@ exports.specs = vows.describe('Basic movement').addBatch
           undefined
           
         "it should ignore move commands": (err, entity) ->
-          assert.isTrue entity.physics.moving
+          assert.isTrue entity.movement.moving
         
       "and after <speed> cycles":
         topic: (entity) ->
@@ -67,4 +64,4 @@ exports.specs = vows.describe('Basic movement').addBatch
           undefined
           
         "it should be ready to move again": (err, entity) ->
-          assert.isFalse entity.physics.moving 
+          assert.isFalse entity.movement.moving 

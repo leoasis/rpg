@@ -1,8 +1,8 @@
 {MapComponent} = require '../map_component'
 {PositionComponent} = require '../position_component'
-{PhysicsComponent} = require '../physics_component'
+{MovementComponent} = require '../movement_component'
 
 module.exports = 
   map: MapComponent
   position: PositionComponent
-  physics: PhysicsComponent
+  movement: MovementComponent

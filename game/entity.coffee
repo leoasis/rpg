@@ -10,7 +10,7 @@ class Entity extends EventEmitter
     this[component.name] = component
     
   init: -> @_callComponents 'init'
-  update: -> @_callComponents 'update'
+  tick: -> @_callComponents 'tick'
   
   destroy: -> 
     @_callComponents 'destroy'

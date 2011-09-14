@@ -5,7 +5,7 @@ keys =
   40: 'down'
 
 class ControllerComponent  
-  init: ->    
+  init: ->
     @canvas.keydown (event) =>      
       event.preventDefault()
       @socket.emit 'move', keys[event.which] if keys[event.which]?

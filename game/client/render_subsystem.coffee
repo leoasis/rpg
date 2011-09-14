@@ -7,7 +7,7 @@ class RenderSubsystem
     
   updateTicksRate: 1
   
-  update: ->
+  tick: ->
     @ticks++
     return if @ticks isnt @updateTicksRate
     @ticks = 0    

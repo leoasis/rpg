@@ -12,7 +12,7 @@ class ClientUpdateSubsystem
     state.me = entity.id    
     entity.clientUpdate.socket.emit 'start', state
   
-  update: ->
+  tick: ->
     @ticks++
     return if @ticks isnt @updateTicksRate
     @ticks = 0

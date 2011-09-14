@@ -3,54 +3,45 @@ Loop = require '../loop'
 EntityFactory = require '../entity_factory'
 ComponentFactory = require '../component_factory'
 components = require './components'
+entityTypes = require './entity_types'
 {ClientUpdateSubsystem} = require './client_update_subsystem'
 
 exports.start = (io) ->
   io.set('log level', 1);
+  
   ComponentFactory.register components
-  
   EntityFactory.for Entity
-  EntityFactory.loadTypes
-    "Player":
-      position: {}
-      map: {}
-      physics:
-        speed: 10
-        width:
-          x: 1
-          y: 1
-      clientUpdate: {}
-      
-  gameLoop = new Loop
+  EntityFactory.loadTypes entityTypes
+
   entities = []
-  subsystems = []
+  subsystems = {}
+    
+  subsystems.clientUpdate = new ClientUpdateSubsystem entities
+  
+  gameLoop = new Loop
   gameLoop.on 'tick', ->
-    entity.update() for entity in entities
-    subsystem.update() for subsystem in subsystems
+    entity.tick() for entity in entities
+    subsystem.tick() for name, subsystem of subsystems
     undefined
-  
-  clientUpdate = new ClientUpdateSubsystem entities
-  subsystems.push clientUpdate
-  
   gameLoop.start()
+  
   nextId = 1
-  i = 1
   io.sockets.on 'connection', (socket) ->    
-    entity = EntityFactory.create 
+    entity = EntityFactory.create
+      id: nextId++
       type: "Player"
       position:
         x: 1
-        y: i++
+        y: 1
       map:
         no: 1
         
-    entity.id = nextId++
     entity.clientUpdate.socket = socket
     entities.push entity
-    clientUpdate.start entity
+    subsystems.clientUpdate.start entity
     
     socket.on 'move', (direction) ->
-      entity.physics.move direction
+      entity.movement.move direction
       
     socket.on 'disconnect', ->
       index = entities.indexOf entity

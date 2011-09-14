@@ -1,4 +1,4 @@
-class PhysicsComponent
+class MovementComponent
   directions = 
     up: 
       x: 0, y: 1
@@ -17,7 +17,7 @@ class PhysicsComponent
     @owner.position.x += velocity.x
     @owner.position.y += velocity.y
   
-  update: ->
+  tick: ->
     @progress++ if @moving
     if @speed == @progress
       @moving = no
@@ -25,8 +25,5 @@ class PhysicsComponent
       
   serialize: ->
     speed: @speed
-    width:
-      x: @width.x
-      y: @width.y
 
-exports.PhysicsComponent = PhysicsComponent
+exports.MovementComponent = MovementComponent

@@ -13,6 +13,7 @@ exports.loadTypes = (theTypes) ->
 exports.create = (description) ->
   entity = new entityType
   entity.type = description.type
+  entity.id = description.id
   
   #Add all components defined in archetype, overriding properties if needed
   for key, value of types[description.type]
